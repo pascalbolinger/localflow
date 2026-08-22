@@ -1,0 +1,8 @@
+{
+  "build": 0,
+  "version": "0.0.0",
+  "url": "https://example.invalid/placeholder.zip",
+  "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "notes": "Platzhalter — wird beim ersten Release ersetzt.",
+  "minimumSystemVersion": "26.0"
+}
