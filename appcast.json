@@ -1,8 +1,8 @@
 {
-  "build": 51,
+  "build": 53,
   "version": "1.0.0",
-  "url": "https://github.com/pascalbolinger/localflow/releases/download/v1.0.0-51/LocalFlow-51.zip",
-  "sha256": "e3d1bcb903039e7b4f0392a7d1367e2f8ab2e48ab82105f3658490cbfd3c5d57",
-  "notes": "Automatische Updates: LocalFlow kann sich ab jetzt selbst aktualisieren. Prüft Prüfsumme und Signatur, ersetzt sich im Hintergrund und startet neu.",
+  "url": "https://github.com/pascalbolinger/localflow/releases/download/v1.0.0-53/LocalFlow-53.zip",
+  "sha256": "bbc80cd38a99d94309645f561f0e4e6dbc40066ae3a56998e6b55e44823dd74d",
+  "notes": "Selbst-Update über das Menü: LocalFlow prüft Prüfsumme und Signatur, ersetzt sich im Hintergrund und startet neu.",
   "minimumSystemVersion": "26.0"
 }
