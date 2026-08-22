@@ -1,8 +1,8 @@
 {
-  "build": 0,
-  "version": "0.0.0",
-  "url": "https://example.invalid/placeholder.zip",
-  "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-  "notes": "Platzhalter — wird beim ersten Release ersetzt.",
+  "build": 51,
+  "version": "1.0.0",
+  "url": "https://github.com/pascalbolinger/localflow/releases/download/v1.0.0-51/LocalFlow-51.zip",
+  "sha256": "e3d1bcb903039e7b4f0392a7d1367e2f8ab2e48ab82105f3658490cbfd3c5d57",
+  "notes": "Automatische Updates: LocalFlow kann sich ab jetzt selbst aktualisieren. Prüft Prüfsumme und Signatur, ersetzt sich im Hintergrund und startet neu.",
   "minimumSystemVersion": "26.0"
 }
