@@ -12,7 +12,10 @@ REPO="pascalbolinger/localflow"
 # Fingerabdruck des Signaturzertifikats „LocalFlow Dev". Nur ein Paket mit
 # genau diesem Zertifikat wird installiert — so kann auch ein übernommenes
 # GitHub-Konto nichts Fremdes unterschieben.
-FINGERPRINT="3727c521ff0bf113266e5048f87bb18145a791edaa31d85afa0c33f2a60a09f3"
+# Seit Build 90 (Oktober 2026) ein neues Zertifikat: Das alte ging bei einer
+# Neuinstallation des Entwickler-Macs verloren. Fassungen bis Build 89 können
+# sich deshalb nicht selbst auf 90 aktualisieren — einmalig dieses Skript.
+FINGERPRINT="b4aa20ab491b36cca9dbf0b5664a003cd42326281d2dabb01e5c89cf1443f0b1"
 
 fail() { echo "✗ $1" >&2; exit 1; }
 
@@ -65,7 +68,12 @@ done
 PARENT=$(dirname "$DEST")
 [ -w "$PARENT" ] || fail "Kein Schreibrecht in $PARENT."
 
+CERT_CHANGED=0
 if [ -d "$DEST" ]; then
+  # Anderes Zertifikat als bisher? Dann gelten die erteilten Rechte nicht mehr.
+  if codesign -d --extract-certificates="$WORK/alt" "$DEST" 2>/dev/null; then
+    [ "$(shasum -a 256 "$WORK/alt0" | cut -d' ' -f1)" = "$FINGERPRINT" ] || CERT_CHANGED=1
+  fi
   OLD=$(defaults read "$DEST/Contents/Info.plist" CFBundleVersion 2>/dev/null || echo "?")
   echo "▸ Ersetze vorhandene Version (Build $OLD)"
   osascript -e 'quit app "LocalFlow"' >/dev/null 2>&1 || true
@@ -79,8 +87,27 @@ fi
 
 /usr/bin/ditto "$APP" "$DEST" || fail "Kopieren fehlgeschlagen."
 NEW=$(defaults read "$DEST/Contents/Info.plist" CFBundleVersion)
+if [ "$CERT_CHANGED" = "1" ]; then
+  # macOS bindet das Bedienungshilfen-Recht an die Signatur. Der alte Eintrag
+  # steht noch in der Liste, zählt aber nicht mehr — die Diktiertaste bliebe
+  # stumm. Also den alten Eintrag entfernen und die richtige Seite öffnen.
+  tccutil reset Accessibility com.lumetri.localflow >/dev/null 2>&1 || true
+fi
 echo "▸ Starte LocalFlow (Build $NEW)"
 open "$DEST"
+
+if [ "$CERT_CHANGED" = "1" ]; then
+  open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility" 2>/dev/null || true
+  cat <<'RECHTE'
+
+! EINMALIG NÖTIG — diese Fassung ist neu signiert:
+  1. In der Liste, die sich gerade öffnet (Bedienungshilfen), LocalFlow EINSCHALTEN.
+     Fehlt es dort: mit „+" /Applications/LocalFlow.app hinzufügen.
+  2. LocalFlow beenden und neu starten (Menüleiste → LocalFlow → Beenden, dann öffnen).
+  3. Beim ersten Diktat die Mikrofon-Frage mit „Erlauben" beantworten.
+  Ohne Schritt 1 und 2 reagiert die Diktiertaste nicht.
+RECHTE
+fi
 
 cat <<'DONE'
 
