@@ -1,7 +1,12 @@
 #!/bin/bash
 # LocalFlow installieren oder aktualisieren.
 #
-#   curl -fsSL https://raw.githubusercontent.com/pascalbolinger/localflow/main/install.sh | bash
+# Nicht aus „main“ in die Shell leiten. Dieses Skript wird als versioniertes
+# Release („installer-v1“) verteilt; vor dem Ausführen die SHA-256-Prüfsumme
+# aus der README bzw. dem Release-Text prüfen:
+#
+#   curl -fsSL -o localflow-install.sh https://github.com/pascalbolinger/localflow/releases/download/installer-v1/install.sh
+#   echo "<Prüfsumme>  localflow-install.sh" | shasum -a 256 -c - && bash localflow-install.sh
 #
 # Holt die neueste Fassung, prüft Prüfsumme und Signatur und ersetzt eine
 # vorhandene Installation. Diktate, Wörterbuch und Einstellungen liegen in
